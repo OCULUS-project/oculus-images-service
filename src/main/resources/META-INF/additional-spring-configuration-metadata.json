@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "img.root",
+      "type": "java.lang.String",
+      "description": "Root for served images."
+    },
+    {
+      "name": "img.path",
+      "type": "java.lang.String",
+      "description": "Request path for served images."
+    }
+  ] }
