@@ -2,12 +2,10 @@ package pl.put.poznan.oculus.oculusimagesservice.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pl.put.poznan.oculus.oculusimagesservice.model.Image
 import pl.put.poznan.oculus.oculusimagesservice.model.ImageFile
 import pl.put.poznan.oculus.oculusimagesservice.repository.FileSystemRepository
 import pl.put.poznan.oculus.oculusimagesservice.repository.ImageFileRepository
 import pl.put.poznan.oculus.oculusimagesservice.repository.ImageRepository
-import kotlin.streams.toList
 
 @Service
 class ImageFilesService (

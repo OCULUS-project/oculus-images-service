@@ -17,10 +17,7 @@ class ImagesService (
         val imgPath: String
 ) {
 
-    fun getImagePath(id: String): String {
-        val image = imageRepository.findByIdOrNull(id)!!
-        return getImagePath(image)
-    }
+    fun getImage(id: String) = imageRepository.findByIdOrNull(id)
 
     private fun getImagePath(image: Image) =
             if (image.path.isNotBlank()) "$imgPath/${image.path}"

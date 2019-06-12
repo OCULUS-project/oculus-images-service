@@ -1,10 +1,14 @@
 package pl.put.poznan.oculus.oculusimagesservice.rest.request
 
-import java.time.Instant
+import io.swagger.annotations.ApiModel
+import io.swagger.annotations.ApiModelProperty
 
+@ApiModel(description = "details of image file")
 data class ImageFileCreateRequest (
+        @ApiModelProperty(notes = "id of patient")
         val patient: String,
+        @ApiModelProperty(notes = "id of doctor")
         val author: String,
-        val date: Instant,
+        @ApiModelProperty(notes = "notes")
         val notes: String
 )

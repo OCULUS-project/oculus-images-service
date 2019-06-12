@@ -18,10 +18,6 @@ annotation class PublicAPI
 @Configuration
 @EnableSwagger2
 class SwaggerConfig {
-    companion object {
-        const val NEVER_RETURNS = "Never returns"
-    }
-
     @Bean
     fun api(): Docket {
         return Docket(DocumentationType.SWAGGER_2)
@@ -33,13 +29,15 @@ class SwaggerConfig {
                 .apiInfo(info())
     }
 
-    private fun info(): ApiInfo {
-        return ApiInfoBuilder().title("mcloud REST")
-                .description("Simple cloud for MongoDB")
-                .contact(Contact("Jakub Riegel", "www.jrie.eu", "jakub.riegel@student.put.poznan.pl"))
-                .license("MIT")
-                .licenseUrl("#")
-                .version("1.0.0")
-                .build()
+    companion object {
+        private fun info(): ApiInfo {
+            return ApiInfoBuilder().title("oculus-images-service")
+                    .description("Stores and manages images in OCULUS")
+                    .contact(Contact("Jakub Riegel", "www.cie.put.poznan.pl", "jakub.riegel@student.put.poznan.pl"))
+                    .license("MIT")
+                    .licenseUrl("#")
+                    .version("1.0.0")
+                    .build()
+        }
     }
 }
