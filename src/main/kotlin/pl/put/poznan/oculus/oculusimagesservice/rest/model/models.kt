@@ -15,6 +15,12 @@ fun Image.toModel() = ImageModel(this).apply {
     add(linkTo(methodOn(ImagesController::class.java).getImage(id!!)).withSelfRel())
     add(linkTo(ImagesController::class.java).slash("static").slash(path.substringAfter("/img")).withRel(IanaLinkRelations.CANONICAL))
     add(linkTo(methodOn(ImageFilesController::class.java).getFileById(fileId)).withRel(IanaLinkRelations.DESCRIBED_BY))
+    add(scaled.map {
+        linkTo(ImagesController::class.java)
+                .slash("static")
+                .slash(it.path.substringAfter("/img"))
+                .withRel("${IanaLinkRelations.CANONICAL}Scaled${it.size}")
+    })
 }
 
 class ImageFileModel(content: ImageFile) : EntityModel<ImageFile>(content)

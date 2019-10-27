@@ -8,16 +8,25 @@ import pl.put.poznan.oculus.oculusimagesservice.repository.ImageRepository
 
 @Service
 class ImagesService (
+        private val scalingService: ScalingService,
         private val imageRepository: ImageRepository,
         private val fileSystemRepository: FileSystemRepository
 ) {
 
-    fun getImage(id: String) = imageRepository.findByIdOrNull(id)
+    fun getImage(id: String) = imageRepository.findByIdOrNull(id).scaled()
 
-    fun getImagesFromFile(fileId: String) = imageRepository.findAllByFileId(fileId)
+    fun getImagesFromFile(fileId: String) = imageRepository.findAllByFileId(fileId).scaled()
+
+    private fun Image?.scaled() = when {
+        this == null -> this
+        this.scaled.isEmpty() -> scalingService.scaleImage(path).let { imageRepository.saveScaledImages(id!!, it) }
+        else -> this
+    }
+
+    private fun List<Image>.scaled() = map { it.scaled()!! }
 
     fun createImage(imageFileId: String, content: ByteArray) =
-            imageRepository.save(Image(fileId = imageFileId)).let {
+            imageRepository.insert(Image(fileId = imageFileId)).let {
                 imageRepository.save(Image(it.id, imageFileId, it.saveToFileSystem(imageFileId, content), it.date))
             }
 
