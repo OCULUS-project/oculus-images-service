@@ -12,12 +12,12 @@ data class Image (
         @Id
         @ApiModelProperty(notes = "id of image")
         val id: String? = null,
+        @ApiModelProperty(notes = "id of file")
+        val fileId: String,
         @ApiModelProperty(notes = "path to image in the file system")
         val path: String = "",
         @ApiModelProperty(notes = "date of creation")
-        val date: Instant,
+        val date: Instant = Instant.now(),
         @ApiModelProperty(notes = "notes")
         val notes: String = ""
-) {
-        constructor() : this(date=Instant.now())
-}
+)

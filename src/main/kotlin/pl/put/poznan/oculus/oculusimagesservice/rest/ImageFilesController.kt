@@ -10,21 +10,22 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
-import org.springframework.web.util.UriComponentsBuilder
-import pl.put.poznan.oculus.oculusimagesservice.config.PublicAPI
-import pl.put.poznan.oculus.oculusimagesservice.model.ImageFile
-import pl.put.poznan.oculus.oculusimagesservice.rest.ImageFilesController.Companion.PATH
-import pl.put.poznan.oculus.oculusimagesservice.rest.request.ImageFileCreateRequest
+import pl.poznan.put.oculus.boot.config.PublicAPI
+import pl.put.poznan.oculus.oculusimagesservice.rest.model.ImageFileCreateRequest
+import pl.put.poznan.oculus.oculusimagesservice.rest.model.ImageFileModel
+import pl.put.poznan.oculus.oculusimagesservice.rest.model.PatientsImageFilesResponse
+import pl.put.poznan.oculus.oculusimagesservice.rest.model.toModel
 import pl.put.poznan.oculus.oculusimagesservice.service.ImageFilesService
 
 @RestController
-@RequestMapping(PATH)
+@RequestMapping("/files")
 @PublicAPI
 @Api(value = "manage image files", description = "create, delete and retrieve files")
 class ImageFilesController (
@@ -39,9 +40,9 @@ class ImageFilesController (
     ])
     fun getFileById(
             @RequestParam @ApiParam(value = "id of image file to retrieve", required = true) id: String
-    ): ResponseEntity<ImageFile> {
+    ): ResponseEntity<ImageFileModel> {
         val file = service.getFileById(id)
-        return if (file != null) ResponseEntity.ok(file)
+        return if (file != null) ResponseEntity.ok(file.toModel())
         else ResponseEntity
                 .noContent()
                 .build()
@@ -53,17 +54,20 @@ class ImageFilesController (
         ApiResponse(code = 200, message = "specified patient has image files"),
         ApiResponse(code = 204, message = "specified patient does not have image files", response = Unit::class)
     ])
-    fun getFileByPatient(
+    fun getFilesByPatient(
             @RequestParam @ApiParam(value = "id of patient to look for", required = true) patientId: String
-    ): ResponseEntity<List<ImageFile>> {
-        val file = service.getFileByPatient(patientId)
-        return if (file.isNotEmpty()) ResponseEntity.ok(file)
+    ): ResponseEntity<PatientsImageFilesResponse> {
+        val files = service.getFileByPatient(patientId)
+        return if (files.isNotEmpty()) {
+            val response = PatientsImageFilesResponse(patientId, files.map { it.toModel() })
+            ResponseEntity.ok(response)
+        }
         else ResponseEntity
                 .noContent()
                 .build()
     }
 
-    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE], produces = [MediaType.APPLICATION_JSON_VALUE])
+    @PostMapping(consumes = [MediaType.APPLICATION_JSON_VALUE, "application/prs.hal-forms+json"], produces = [MediaType.APPLICATION_JSON_VALUE, "application/prs.hal-forms+json"])
     @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "create new image file with empty image list")
     @ApiResponses(value = [
@@ -71,32 +75,25 @@ class ImageFilesController (
     ])
     fun createFile(
             @RequestBody @ApiParam(value = "desired image file data", required = true) request: ImageFileCreateRequest
-    ): ResponseEntity<ImageFile> {
-        val file = service.createFile(request.patient, request.author, request.notes)
+    ): ResponseEntity<ImageFileModel> {
+        val file = service.createFile(request.patient, request.author, request.notes).toModel()
         return ResponseEntity
-                .created(file.getUri())
+                .created(file.getRequiredLink("self").toUri())
                 .body(file)
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ApiOperation(value = "create new image file with empty image list")
     @ApiResponses(value = [
         ApiResponse(code = 204, message = "image file deleted successfully or did not exist")
     ])
     fun deleteImageFile(
-            @RequestParam @ApiParam(value = "id of image file to delete", required = true) id: String
-    ) = service.deleteImageFile(id)
-
-    companion object {
-
-        const val PATH = "img/files"
-
-        private fun ImageFile.getUri()  = UriComponentsBuilder
-                .newInstance()
-                .path(PATH)
-                .queryParam("id", id)
+            @PathVariable @ApiParam(value = "id of image file to delete", required = true) id: String
+    ): ResponseEntity<Unit> {
+        service.deleteImageFile(id)
+        return ResponseEntity
+                .noContent()
                 .build()
-                .toUri()
     }
 }

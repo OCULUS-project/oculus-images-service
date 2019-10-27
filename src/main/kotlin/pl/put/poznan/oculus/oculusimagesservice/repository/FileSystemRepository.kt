@@ -18,6 +18,9 @@ class FileSystemRepository (
         return fileSystemConnector.createFile(fileName, imageName, content)
     }
 
+    fun deleteImage(imageId: String, imageFileId: String) = deleteFileOrDirectory(
+            "${imageFileName(imageFileId)}/${imageName(imageId)}"
+    )
     fun deleteImageFile(imageFileId: String) = deleteFileOrDirectory(imageFileName(imageFileId))
     fun deleteFileOrDirectory(path: String) = fileSystemConnector.deleteFile(path)
 
