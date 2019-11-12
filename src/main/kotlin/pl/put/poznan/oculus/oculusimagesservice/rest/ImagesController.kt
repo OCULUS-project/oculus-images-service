@@ -26,7 +26,7 @@ import pl.put.poznan.oculus.oculusimagesservice.service.ImagesService
 import java.net.URI
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/img")
 @PublicAPI
 @Api(value = "manage individual images", description = "Create and retrieve images")
 class ImagesController (
@@ -34,7 +34,7 @@ class ImagesController (
 ) {
 
     @GetMapping("/{id}", produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ApiOperation(value = "retrieve single image data including static path")
+    @ApiOperation(value = "retrieve single image data including its static path")
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "image exists", responseHeaders = [ResponseHeader(name = "Location", description = "static path to given image", response = String::class)]),
         ApiResponse(code = 204, message = "image does not exist", response = Unit::class    )

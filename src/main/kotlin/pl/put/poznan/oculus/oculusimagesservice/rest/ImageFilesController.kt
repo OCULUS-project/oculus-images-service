@@ -25,9 +25,9 @@ import pl.put.poznan.oculus.oculusimagesservice.rest.model.toModel
 import pl.put.poznan.oculus.oculusimagesservice.service.ImageFilesService
 
 @RestController
-@RequestMapping("/files")
+@RequestMapping("/img/files")
 @PublicAPI
-@Api(value = "manage image files", description = "create, delete and retrieve files")
+@Api(value = "manage image files", description = "Create, delete and retrieve files")
 class ImageFilesController (
         val service: ImageFilesService
 ) {
