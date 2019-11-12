@@ -20,7 +20,7 @@ class FileSystemConnector internal constructor(
         val path = path(name)
         val directory = File(path)
         if (directory.exists()) throw Exception("directory already exists $path")
-        directory.mkdir()
+        directory.mkdirs()
         return path
     }
 

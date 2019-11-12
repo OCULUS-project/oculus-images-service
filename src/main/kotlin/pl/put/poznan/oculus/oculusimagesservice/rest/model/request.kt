@@ -1,4 +1,4 @@
-package pl.put.poznan.oculus.oculusimagesservice.rest.request
+package pl.put.poznan.oculus.oculusimagesservice.rest.model
 
 import io.swagger.annotations.ApiModel
 import io.swagger.annotations.ApiModelProperty
