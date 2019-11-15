@@ -50,7 +50,7 @@ class ImagesController (
     }
 
     @GetMapping(produces = [MediaType.APPLICATION_JSON_VALUE])
-    @ApiOperation(value = "retrieve single image data including static path")
+    @ApiOperation(value = "retrieve images from given file")
     @ApiResponses(value = [
         ApiResponse(code = 200, message = "one or more images belongs to the file"),
         ApiResponse(code = 204, message = "no images on this fil", response = Unit::class)

@@ -14,7 +14,7 @@ class ImageModel(content: Image) : EntityModel<Image>(content)
 fun Image.toModel() = ImageModel(this).apply {
     add(linkTo(methodOn(ImagesController::class.java).getImage(id!!)).withSelfRel())
     add(linkTo(ImagesController::class.java).slash("static").slash(path.substringAfter("/img")).withRel(IanaLinkRelations.CANONICAL))
-    add(linkTo(methodOn(ImageFilesController::class.java).getFileById(fileId)).withRel(IanaLinkRelations.DESCRIBED_BY))
+    add(linkTo(methodOn(ImageFilesController::class.java).getFileById(fileId)).withRel(IanaLinkRelations.COLLECTION))
     add(scaled.map {
         linkTo(ImagesController::class.java)
                 .slash("static")
