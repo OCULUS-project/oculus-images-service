@@ -84,7 +84,7 @@ class ImageFilesController (
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @ApiOperation(value = "create new image file with empty image list")
+    @ApiOperation(value = "delete image file")
     @ApiResponses(value = [
         ApiResponse(code = 204, message = "image file deleted successfully or did not exist")
     ])
