@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import org.springframework.web.servlet.resource.PathResourceResolver
 
 @Configuration
 class FileSystemConfig (
@@ -15,7 +16,9 @@ class FileSystemConfig (
     override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
         registry
                 .addResourceHandler("$imgPath/**")
-                .addResourceLocations("file:$imgRoot")
+                .addResourceLocations("file:$imgRoot/")
                 .setCachePeriod(36000)
+                .resourceChain(true)
+                .addResolver(PathResourceResolver())
     }
 }
