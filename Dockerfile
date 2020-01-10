@@ -7,4 +7,4 @@ WORKDIR /app
 ENV spring_profiles_active dev
 EXPOSE 80
 
-CMD java -jar build/libs/oculus-images-service-0.0.2.jar
+CMD java -jar build/libs/oculus-images-service-0.0.3.jar
