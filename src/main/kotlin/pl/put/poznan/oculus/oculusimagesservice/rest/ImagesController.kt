@@ -10,7 +10,6 @@ import org.springframework.hateoas.IanaLinkRelations
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.CrossOrigin
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -26,7 +25,6 @@ import pl.put.poznan.oculus.oculusimagesservice.rest.model.toModel
 import pl.put.poznan.oculus.oculusimagesservice.service.ImagesService
 import java.net.URI
 
-@CrossOrigin
 @RestController
 @RequestMapping("/img")
 @PublicAPI
